@@ -1,0 +1,84 @@
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #ffe6f0, #fff0f5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+   background-image: url("bg.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.container {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+  max-width: 360px;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #ff4d88;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+button {
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.yes-button {
+  background: #ff4d88;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.no-button {
+  background: #e0e0e0;
+  color: #333;
+}
+
+/* Keep disabled readable */
+button:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.no-button:disabled {
+  background: #f0f0f0;
+}
+
+.yes-button:disabled {
+  background: #ff9dbd;
+  color: white;
+}
+
+.message {
+  min-height: 26px;
+  margin-top: 10px;
+  color: #444;
+  font-size: 14px;
+}
+
+.image_container img {
+  width: 100%;
+  max-width: 240px;
+  margin-top: 16px;
+  border-radius: 12px;
+  transition: opacity 0.4s ease;
+}
+

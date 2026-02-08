@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Find the Egg 🥚</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #fdeef3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+  }
+
+  .game {
+    position: relative;
+    width: 600px;
+    max-width: 95%;
+    height: 320px;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    overflow: hidden;
+  }
+
+  .instruction {
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    z-index: 10;
+  }
+
+  #chicken {
+    position: absolute;
+    left: 40px;
+    bottom: 40px;
+    width: 130px;
+    cursor: grab;
+    z-index: 3;
+    touch-action: none;
+  }
+
+  #egg {
+    position: absolute;
+    left: 90px;
+    bottom: 45px;
+    width: 50px;
+    display: none; /* hidden until chicken moves */
+    z-index: 2;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  #basket {
+    position: absolute;
+    right: 40px;
+    bottom: 30px;
+    width: 130px;
+    z-index: 1;
+  }
+
+  .success {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,240,245,0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: #ff4d88;
+    z-index: 20;
+    text-align: center;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="game" id="game">
+  <div class="instruction">Put egg🥚 in Basket🧺</div>
+
+  <img id="chicken" src="chicken.png" alt="chicken">
+  <img id="egg" src="egg.png" alt="egg">
+  <img id="basket" src="basket.png" alt="basket">
+
+  <div class="success" id="success">
+    lets goo that was awesome💖
+  </div>
+</div>
+
+<script>
+const game = document.getElementById("game");
+const chicken = document.getElementById("chicken");
+const egg = document.getElementById("egg");
+const basket = document.getElementById("basket");
+const success = document.getElementById("success");
+
+/* ---------- CHICKEN LOGIC ---------- */
+let chickenStartX = 0;
+let chickenLeft = 40;
+let eggRevealed = false;
+
+chicken.addEventListener("pointerdown", e => {
+  chickenStartX = e.clientX;
+});
+
+document.addEventListener("pointermove", e => {
+  if (eggRevealed) return;
+  if (chickenStartX === 0) return;
+
+  const dx = e.clientX - chickenStartX;
+
+  if (dx > 0) {
+    chicken.style.left = chickenLeft + dx + "px";
+
+    if (dx > 90) {
+      egg.style.display = "block";      // reveal egg
+      eggRevealed = true;
+      chicken.style.pointerEvents = "none"; // stop chicken
+    }
+  }
+});
+
+document.addEventListener("pointerup", () => {
+  chickenStartX = 0;
+});
+
+/* ---------- EGG LOGIC ---------- */
+let eggDragging = false;
+let eggOffsetX = 0;
+let eggOffsetY = 0;
+
+egg.addEventListener("pointerdown", e => {
+  eggDragging = true;
+  const rect = egg.getBoundingClientRect();
+  eggOffsetX = e.clientX - rect.left;
+  eggOffsetY = e.clientY - rect.top;
+});
+
+document.addEventListener("pointermove", e => {
+  if (!eggDragging) return;
+
+  const gameRect = game.getBoundingClientRect();
+
+  egg.style.left = e.clientX - gameRect.left - eggOffsetX + "px";
+  egg.style.top  = e.clientY - gameRect.top  - eggOffsetY + "px";
+});
+
+document.addEventListener("pointerup", () => {
+  if (!eggDragging) return;
+  eggDragging = false;
+
+  const eggRect = egg.getBoundingClientRect();
+  const basketRect = basket.getBoundingClientRect();
+
+  if (
+    eggRect.left > basketRect.left &&
+    eggRect.right < basketRect.right &&
+    eggRect.bottom < basketRect.bottom
+  ) {
+    success.style.display = "flex";
+
+    // ❤️ AUTO REDIRECT AFTER SUCCESS
+    setTimeout(() => {
+      window.location.href = "valentine.html";
+    }, 2000);
+  }
+});
+</script>
+
+</body>
+</html>
+
+
+

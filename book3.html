@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Catlopedia 📖</title>
+
+<style>
+  /* ===== CUSTOM CURSOR ===== */
+*,
+*::before,
+*::after {
+  cursor: url("nail final.png") 32 32, auto !important;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  font-family: sans-serif;
+  background-image: url("bg.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 240, 245, 0.55);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ===== HEADER ===== */
+.top-bar {
+  width: 100%;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ff4d88;
+}
+
+.spotify-player {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* ===== READER ===== */
+.reader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+/* ===== BOOK WRAPPER ===== */
+.book-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===== BOOK ===== */
+.book {
+  width: 90vw;
+  max-width: 520px;
+  height: 90vh;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.page img {
+  width: 98%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+/* ===== PAGE NUMBER (OUTSIDE) ===== */
+.page-number {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #777;
+}
+
+/* ===== NAV BUTTONS ===== */
+.nav-btn {
+  background: #ff4d88;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
+
+.nav-btn:hover {
+  opacity: 0.9;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .book {
+    height: 75vh;
+  }
+
+  .spotify-player iframe {
+    width: 240px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="top-bar">
+  <div class="spotify-player">
+    <iframe
+      src="https://open.spotify.com/embed/track/6a6EVcOcZVNBQUdXFguMMK?utm_source=generator&theme=0"
+      width="300"
+      height="80"
+      frameborder="0"
+      allow="encrypted-media"
+      loading="lazy">
+    </iframe>
+  </div>
+</header>
+
+<!-- READER -->
+<div class="reader">
+
+  <!-- PREV -->
+  <button class="nav-btn" onclick="prevPage()">← Prev</button>
+
+  <!-- BOOK + PAGE NUMBER -->
+  <div class="book-wrapper">
+    <div class="book">
+      <div class="page">
+        <img id="pageImage" src="book3/1.png" alt="Page">
+      </div>
+    </div>
+
+    <div class="page-number" id="pageNumber">
+      Page 1 of 100
+    </div>
+  </div>
+
+  <!-- NEXT -->
+  <button class="nav-btn" onclick="nextPage()">Next →</button>
+
+</div>
+
+<script>
+let currentPage = 1;
+const totalPages = 100;
+
+const img = document.getElementById("pageImage");
+const pageNumber = document.getElementById("pageNumber");
+
+function updatePage() {
+  img.style.opacity = 0;
+  setTimeout(() => {
+    img.src = `book3/${currentPage}.png`;
+    pageNumber.textContent = `Page ${currentPage} of ${totalPages}`;
+    img.style.opacity = 1;
+  }, 150);
+}
+
+function nextPage() {
+  if (currentPage < totalPages) {
+    currentPage++;
+    updatePage();
+  }
+}
+
+function prevPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    updatePage();
+  }
+}
+</script>
+
+</body>
+</html>

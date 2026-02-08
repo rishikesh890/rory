@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Catlopedia 📖</title>
+
+<style>
+/* ===== CUSTOM CURSOR ===== */
+*,
+*::before,
+*::after {
+  cursor: url("nail final.png") 32 32, auto !important;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== BODY ===== */
+body {
+  min-height: 100vh;
+  font-family: sans-serif;
+  background-image: url("bg.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 240, 245, 0.55);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ===== HEADER ===== */
+.top-bar {
+  width: 100%;
+  padding: 14px 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.spotify-player {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* ===== READER ===== */
+.reader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+/* ===== BOOK WRAPPER ===== */
+.book-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===== BOOK ===== */
+.book {
+  width: 90vw;
+  max-width: 500px;
+  height: 95vh;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  overflow: hidden;
+  position: relative; /* 🔑 important */
+}
+
+/* ===== PAGE IMAGE ===== */
+.page img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+/* ===== PAGE NUMBER ===== */
+.page-number {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #777;
+}
+
+/* ===== NAV BUTTONS ===== */
+.nav-btn {
+  background: #ff4d88;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
+
+.nav-btn:hover {
+  opacity: 0.9;
+}
+
+/* ===== LAST PAGE CTA (OVERLAY) ===== */
+.cool-prompt {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.9);
+  padding: 16px 22px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: none;
+  z-index: 5;
+  animation: fadeIn 0.4s ease;
+}
+
+.cool-prompt p {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.cool-prompt button {
+  background: #ff4d88;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 22px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .book {
+    height: 80vh;
+  }
+
+  .spotify-player iframe {
+    width: 240px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="top-bar">
+  <div class="spotify-player">
+    <iframe
+      src="https://open.spotify.com/embed/track/6qqrTXSdwiJaq8SO0X2lSe?theme=0"
+      width="300"
+      height="80"
+      frameborder="0"
+      allow="encrypted-media"
+      loading="lazy">
+    </iframe>
+  </div>
+</header>
+
+<!-- READER -->
+<div class="reader">
+
+  <button class="nav-btn" onclick="prevPage()">← Prev</button>
+
+  <div class="book-wrapper">
+    <div class="book">
+      <div class="page">
+        <img id="pageImage" src="book4/1.png" alt="Page">
+      </div>
+
+      <!-- LAST PAGE CTA -->
+      <div id="coolPrompt" class="cool-prompt">
+        <p>Wanna see something cool? ✨</p>
+        <button onclick="goToGame()">Yes 💖</button>
+      </div>
+    </div>
+
+    <div class="page-number" id="pageNumber">
+      Page 1 of 10
+    </div>
+  </div>
+
+  <button class="nav-btn" onclick="nextPage()">Next →</button>
+
+</div>
+
+<script>
+let currentPage = 1;
+const totalPages = 10;
+
+const img = document.getElementById("pageImage");
+const pageNumber = document.getElementById("pageNumber");
+const coolPrompt = document.getElementById("coolPrompt");
+
+function updatePage() {
+  img.style.opacity = 0;
+
+  setTimeout(() => {
+    img.src = `book4/${currentPage}.png`;
+    pageNumber.textContent = `Page ${currentPage} of ${totalPages}`;
+    img.style.opacity = 1;
+
+    // show CTA only on last page
+    if (currentPage === totalPages) {
+      coolPrompt.style.display = "block";
+    } else {
+      coolPrompt.style.display = "none";
+    }
+  }, 150);
+}
+
+function nextPage() {
+  if (currentPage < totalPages) {
+    currentPage++;
+    updatePage();
+  }
+}
+
+function prevPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    updatePage();
+  }
+}
+
+function goToGame() {
+  window.location.href = "game.html";
+}
+
+// initial load
+updatePage();
+</script>
+
+</body>
+</html>
